@@ -1,0 +1,24 @@
+﻿# Local/runtime installs
+/OllamaOutlookAddin/
+
+# Local-only Codex working notes
+/Outlook Ollama Codex Context.md
+
+# Local screenshots, experiments, and generated asset variants not intended for release
+/_local-private-assets/
+/assets/*(1).png
+/assets/*.co-generated.png
+/assets/*Summary*.png
+/assets/*manifest*.png
+/assets/*Plugin*.png
+/assets/*darkmode*.png
+/assets/OriginalLogo1.png
+/assets/screenshot-placeholder.png
+
+# OS/editor clutter
+.DS_Store
+Thumbs.db
+*.tmp
+*.log
+.vscode/
+.idea/

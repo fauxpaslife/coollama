@@ -1,0 +1,169 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CoOllama</title>
+  <link rel="stylesheet" href="taskpane.css">
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js"></script>
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand-block">
+        <img class="brand-logo" src="../assets/coollama-app-64.png" alt="CoOllama logo">
+        <div>
+          <p class="eyebrow">Local Outlook AI</p>
+          <h1>CoOllama</h1>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="themeToggle" class="icon-button theme-button" type="button" title="Switch theme" aria-label="Switch theme">Dark</button>
+        <button id="refreshModels" class="icon-button" type="button" title="Refresh models" aria-label="Refresh models">Refresh</button>
+      </div>
+    </header>
+
+    <section id="statusBanner" class="banner is-muted" role="status">Checking Ollama...</section>
+    <section id="troublePanel" class="panel trouble-panel hidden" aria-live="polite">
+      <div>
+        <span class="label">Troubleshooting</span>
+        <strong id="troubleTitle">Connection issue</strong>
+      </div>
+      <p id="troubleMessage"></p>
+      <ol id="troubleSteps"></ol>
+      <div class="trouble-actions">
+        <button id="retryConnectionBtn" type="button">Retry</button>
+        <a class="link-button" href="https://ollama.com" target="_blank" rel="noreferrer">Get Ollama</a>
+      </div>
+    </section>
+
+    <section class="panel model-panel">
+      <label for="modelSelect">Model</label>
+      <div class="model-row">
+        <select id="modelSelect">
+          <option value="">Loading models...</option>
+        </select>
+        <button id="unloadModelBtn" class="ghost small-button" type="button" disabled>Unload</button>
+      </div>
+    </section>
+
+    <section class="panel email-card">
+      <div class="panel-heading compact-heading">
+        <span class="label">Current email</span>
+        <button id="refreshEmailBtn" class="ghost small-button" type="button">Refresh</button>
+      </div>
+      <div>
+        <span class="label">Subject</span>
+        <strong id="emailSubject">Loading...</strong>
+      </div>
+      <div>
+        <span class="label">From</span>
+        <span id="emailSender">Loading...</span>
+      </div>
+      <div>
+        <span class="label">Mode</span>
+        <span id="composeStatus" class="status-pill">Detecting</span>
+      </div>
+    </section>
+
+    <section class="panel action-panel">
+      <div class="control-row">
+        <div>
+          <label for="summaryMode">Summarize mode</label>
+          <select id="summaryMode">
+            <option value="bullets">Bulleted summary</option>
+            <option value="short">Short summary</option>
+            <option value="detailed">Detailed review</option>
+            <option value="suggestions">Suggested response</option>
+          </select>
+        </div>
+        <button id="summarizeBtn" type="button">Summarize</button>
+      </div>
+
+      <div class="button-grid">
+        <button id="draftBtn" type="button">Draft reply</button>
+        <button id="draftVoiceBtn" type="button">Draft in your voice</button>
+        <button id="checkBtn" type="button">Check email</button>
+        <button id="grammarBtn" type="button">Spell & grammar</button>
+        <button id="suspiciousBtn" type="button">Suspicious?</button>
+        <button id="rewriteBtn" class="compose-only" type="button">Rewrite selection</button>
+      </div>
+
+      <label for="replyBullets">Reply notes</label>
+      <textarea id="replyBullets" rows="4" placeholder="Add bullet points for a reply..."></textarea>
+    </section>
+
+    <section id="rewritePanel" class="panel compose-only hidden">
+      <div class="split">
+        <div>
+          <span class="label">Before</span>
+          <pre id="rewriteBefore"></pre>
+        </div>
+        <div>
+          <span class="label">After</span>
+          <pre id="rewriteAfter"></pre>
+        </div>
+      </div>
+      <button id="applyRewriteBtn" type="button" disabled>Apply rewrite</button>
+    </section>
+
+    <section class="panel result-panel">
+      <div class="panel-heading">
+        <label for="resultBox">Result</label>
+        <button id="insertResultBtn" class="ghost compose-only hidden" type="button" disabled>Insert</button>
+        <button id="clearWorkBtn" class="ghost" type="button">Clear</button>
+        <button id="copyResultBtn" class="ghost" type="button">Copy</button>
+      </div>
+      <div id="resultBox" class="markdown-output" aria-live="polite">Ready when Outlook and Ollama are.</div>
+    </section>
+
+    <section class="panel">
+      <label for="chatInput">Ask anything</label>
+      <textarea id="chatInput" rows="4" placeholder="Ask about this email..."></textarea>
+      <button id="chatBtn" type="button">Send chat</button>
+    </section>
+
+    <details class="panel settings">
+      <summary>Voice profile</summary>
+      <div class="control-row">
+        <div>
+          <label for="voiceSampleLimit">Sample size</label>
+          <input id="voiceSampleLimit" type="number" min="1" max="20" value="15">
+        </div>
+        <button id="addCurrentEmailVoiceBtn" type="button">Add current sample</button>
+      </div>
+      <label for="voiceSamples">Sample sent emails</label>
+      <textarea id="voiceSamples" rows="8" placeholder="Open sent emails one at a time and add them here, or paste sent emails separated by ---"></textarea>
+      <div class="button-grid compact-buttons">
+        <button id="buildVoiceBtn" type="button">Build profile</button>
+        <button id="clearVoiceSamplesBtn" class="ghost" type="button">Clear samples</button>
+      </div>
+
+      <label for="voiceProfile">Saved profile</label>
+      <textarea id="voiceProfile" rows="7" placeholder="No voice profile saved yet."></textarea>
+      <button id="copyVoiceProfileBtn" class="ghost" type="button">Copy profile</button>
+
+      <label for="toneSlider">Rewrite tone: <span id="toneLabel">Neutral</span></label>
+      <input id="toneSlider" type="range" min="0" max="3" step="1" value="1">
+      <div class="tone-scale" aria-hidden="true">
+        <span>Blunt</span>
+        <span>Neutral</span>
+        <span>Diplomatic</span>
+        <span>Groveling</span>
+      </div>
+    </details>
+  </main>
+
+  <script src="taskpane.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

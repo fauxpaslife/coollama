@@ -1,6 +1,8 @@
-﻿# CoOllama Outlook Add-in
+# CoOllama Outlook Add-in
 
 CoOllama is a local-first Outlook task pane add-in for summarizing email, drafting replies, rewriting selected compose text, and chatting with the current message using models served by Ollama.
+
+See `https://github.com/fauxpaslife/coollama/tree/main/examples` for the UI look and example use.
 
 > Alpha status: useful for daily testing, but still early. Review generated output before sending email.
 

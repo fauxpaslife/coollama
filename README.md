@@ -11,7 +11,7 @@ See `https://github.com/fauxpaslife/coollama/tree/main/examples` for the UI look
 - Windows
 - New Outlook or Outlook with add-in support
 - Ollama installed from `https://ollama.com`
-- Ollama running locally at `http://localhost:11434`
+- Ollama running locally at `http://localhost:11434` *Note you can use a CLOUD Ollama model if you prefer
 - At least one Ollama model installed
 - PowerShell, included with Windows
 
